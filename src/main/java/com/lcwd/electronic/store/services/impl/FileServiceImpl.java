@@ -23,16 +23,24 @@ public class FileServiceImpl implements FileService {
         logger.info("Uploaded file name={}",originalFilename);
         String fileName= UUID.randomUUID().toString();
         String extension=originalFilename.substring(originalFilename.lastIndexOf("."));
-        String fileNameWithExtension=fileName+extension;
-        String fullPathWithFileName=path+ File.separator+fileNameWithExtension;
+        String fileNameWithExtension= fileName+extension;
+        String fullPathWithFileName= path+fileNameWithExtension;
+
+        logger.info("FUll image path {}",fullPathWithFileName);
 
         if(extension.equalsIgnoreCase(".png")|| extension.equalsIgnoreCase(".jpg")||extension.equalsIgnoreCase(".jpeg"))
         {
             File folder=new File(path);
+            logger.info("File extension {}",extension);
+            logger.info("Folder object {}",folder);
+
             if(!folder.exists())
             {
                 //create folder
-                folder.mkdirs();
+
+                boolean mkdirs = folder.mkdirs();
+
+                logger.info("FOlder created {}",mkdirs);
             }
             // upload file
             Files.copy(file.getInputStream(), Paths.get(fullPathWithFileName));
