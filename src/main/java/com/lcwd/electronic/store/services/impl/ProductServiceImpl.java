@@ -15,8 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -26,7 +28,11 @@ public class ProductServiceImpl implements ProductService {
     private ModelMapper mapper;
     @Override
     public ProductDto create(ProductDto productDto) {
+
         Product product = mapper.map(productDto, Product.class);
+        String productId = UUID.randomUUID().toString();
+        product.setProductId(productId);
+        product.setAddedDate(new Date());
         Product saved = productRepository.save(product);
         return mapper.map(saved,ProductDto.class);
     }
@@ -36,8 +42,8 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         product.setTitle(productDto.getTitle());
         product.setDescription(productDto.getDescription());
-        product.setPrice(product.getPrice());
-        product.setDiscountedPrice(product.getDiscountedPrice());
+        product.setPrice(productDto.getPrice());
+        product.setDiscountedPrice(productDto.getDiscountedPrice());
         product.setQuantity(productDto.getQuantity());
         product.setLive(productDto.isLive());
         product.setStock(productDto.isStock());
@@ -73,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
     public PageableResponse<ProductDto> getAllLive(int pageNumber,int pageSize,String sortBy,String sortDir) {
         Sort sort=sortDir.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending():Sort.by(sortBy).ascending();
         Pageable page= PageRequest.of(pageNumber,pageSize,sort);
-        Page<Product> productPage = productRepository.findByLive(page);
+        Page<Product> productPage = productRepository.findByLiveTrue(page);
         return Helper.getPageableResponse(productPage,ProductDto.class);
     }
 

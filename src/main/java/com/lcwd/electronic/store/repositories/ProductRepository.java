@@ -10,5 +10,5 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product,String> {
     //search
     Page<Product> findByTitleContaining(String subTitle,Pageable pageable);
-    Page<Product> findByLive(Pageable pageable);
+    Page<Product> findByLiveTrue(Pageable pageable);
 }
