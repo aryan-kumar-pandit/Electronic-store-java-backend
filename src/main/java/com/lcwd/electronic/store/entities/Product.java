@@ -28,6 +28,7 @@ public class Product {
     private boolean live;
     private boolean stock;
     private int discountedPrice;
+    private String productImageName;
 
 
 }

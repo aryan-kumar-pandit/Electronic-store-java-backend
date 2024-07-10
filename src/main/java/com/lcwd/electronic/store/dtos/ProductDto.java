@@ -24,4 +24,5 @@ public class ProductDto {
     private boolean live;
     private boolean stock;
     private int discountedPrice;
+    private String productImageName;
 }
