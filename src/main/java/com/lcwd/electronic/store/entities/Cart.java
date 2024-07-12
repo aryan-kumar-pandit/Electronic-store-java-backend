@@ -23,7 +23,7 @@ public class Cart {
     private User user;
     //mapping cart items
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "cart")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "cart",orphanRemoval = true)
     private List<CartItem> items=new ArrayList<>();
 
 }

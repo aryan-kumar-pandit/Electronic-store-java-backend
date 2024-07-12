@@ -22,6 +22,5 @@ public class CartDto {
     private String cartId;
     private Date createdAt;
     private UserDto user;
-    //mapping cart items
     private List<CartItemDto> items=new ArrayList<>();
 }

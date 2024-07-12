@@ -19,6 +19,4 @@ public class CartItemDto {
     private ProductDto product;
     private int quantity;
     private int totalPrice;
-    //mapping cart
-    private CartDto cart;
 }
