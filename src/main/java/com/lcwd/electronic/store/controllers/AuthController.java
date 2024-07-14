@@ -1,5 +1,7 @@
 package com.lcwd.electronic.store.controllers;
 
+import com.lcwd.electronic.store.dtos.UserDto;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +19,14 @@ public class AuthController {
 
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private ModelMapper mapper;
 
     @GetMapping("/current")
-    public ResponseEntity<UserDetails> getCurrentUser(Principal principal)
+    public ResponseEntity<UserDto> getCurrentUser(Principal principal)
     {
         String name= principal.getName();
-        return new ResponseEntity<>(userDetailsService.loadUserByUsername(name), HttpStatus.OK);
+        UserDto mapped = mapper.map(userDetailsService.loadUserByUsername(name), UserDto.class);
+        return new ResponseEntity<>(mapped, HttpStatus.OK);
     }
 }
