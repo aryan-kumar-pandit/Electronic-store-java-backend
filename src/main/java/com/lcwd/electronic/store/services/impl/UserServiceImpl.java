@@ -3,9 +3,11 @@ package com.lcwd.electronic.store.services.impl;
 import com.lcwd.electronic.store.ElectronicStoreApplication;
 import com.lcwd.electronic.store.dtos.PageableResponse;
 import com.lcwd.electronic.store.dtos.UserDto;
+import com.lcwd.electronic.store.entities.Role;
 import com.lcwd.electronic.store.entities.User;
 import com.lcwd.electronic.store.exceptions.ResourceNotFoundException;
 import com.lcwd.electronic.store.helper.Helper;
+import com.lcwd.electronic.store.repositories.RoleRepository;
 import com.lcwd.electronic.store.repositories.UserRepository;
 import com.lcwd.electronic.store.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -25,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -39,6 +42,8 @@ public class UserServiceImpl implements UserService {
     private String imagePath;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RoleRepository roleRepository;
 
     private Logger logger= LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -52,6 +57,14 @@ public class UserServiceImpl implements UserService {
 
         //DTO to Entity
         User user=dtoToEntity(userDto);
+
+        //normal role assign
+        Role role=new Role();
+        role.setRoleId(UUID.randomUUID().toString());
+        role.setName("ROLE_NORMAL");
+        Role normal = roleRepository.findByName("ROLE_NORMAL").orElse(role);
+        user.setRoles(List.of(normal));
+
         User savedUser=userRepository.save(user);
 
         //Entity to DTO
