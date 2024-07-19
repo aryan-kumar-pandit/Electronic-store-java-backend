@@ -31,7 +31,8 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET,"/users/**").permitAll()
                     .requestMatchers(HttpMethod.POST,"/users/**").permitAll()
                     .requestMatchers(HttpMethod.GET,"/categories/**").permitAll()
-                    .requestMatchers(HttpMethod.GET,"/categories/**").hasRole("ADMIN");
+                    .requestMatchers("/categories/**").hasRole("ADMIN")
+                    .anyRequest().permitAll();
 
         });
         //kind of security you want-- we used basic security
