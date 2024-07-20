@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class JwtResponse {
     private String token;
     private UserDto user;
-    private String refreshToken;
+    //private String refreshToken;
+    private RefreshTokenDto refreshTokenDto;
 
 }

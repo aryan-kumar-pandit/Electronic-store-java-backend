@@ -1,6 +1,7 @@
 package com.lcwd.electronic.store.services.impl;
 
 import com.lcwd.electronic.store.dtos.RefreshTokenDto;
+import com.lcwd.electronic.store.dtos.UserDto;
 import com.lcwd.electronic.store.entities.RefreshToken;
 import com.lcwd.electronic.store.entities.User;
 import com.lcwd.electronic.store.exceptions.ResourceNotFoundException;
@@ -30,12 +31,22 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     @Override
     public RefreshTokenDto createRefreshToken(String username) {
         User user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("user not found with this email"));
-        RefreshToken refreshToken = RefreshToken.builder()
-                .user(user)
-                .token(UUID.randomUUID().toString())
-                .expiryDate(Instant.now().plusSeconds(5 * 24 * 60 * 60))
-                .build();
-        return this.modelMapper.map(refreshToken,RefreshTokenDto.class);
+        RefreshToken refreshToken = refreshTokenRepository.findByUser(user).orElse(null);
+        if(refreshToken==null)
+        {
+            refreshToken = RefreshToken.builder()
+                    .user(user)
+                    .token(UUID.randomUUID().toString())
+                    .expiryDate(Instant.now().plusSeconds(5 * 24 * 60 * 60))
+                    .build();
+        }
+        else {
+            refreshToken.setToken(UUID.randomUUID().toString());
+            refreshToken.setExpiryDate(Instant.now().plusSeconds(5 * 24 * 60 * 60));
+        }
+
+        RefreshToken savedToken = refreshTokenRepository.save(refreshToken);
+        return this.modelMapper.map(savedToken,RefreshTokenDto.class);
     }
 
     @Override
@@ -51,11 +62,17 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         if(refreshTokenDto.getExpiryDate().compareTo(Instant.now())<0)
         {
             refreshTokenRepository.delete(refreshToken);
-        }
-        else {
             throw new RuntimeException("Refresh token expired");
         }
+
         return refreshTokenDto;
+    }
+
+    @Override
+    public UserDto getUser(RefreshTokenDto dto) {
+        RefreshToken refreshToken = refreshTokenRepository.findByToken(dto.getToken()).orElseThrow(() -> new ResourceNotFoundException("user not found"));
+        User user = refreshToken.getUser();
+        return modelMapper.map(user,UserDto.class);
     }
 
 

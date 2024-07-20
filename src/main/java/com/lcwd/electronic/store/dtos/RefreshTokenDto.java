@@ -7,7 +7,7 @@ import lombok.*;
 
 import java.time.Instant;
 
-@Entity
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,5 +18,5 @@ public class RefreshTokenDto {
     private int id;
     private String token;
     private Instant expiryDate;
-    private UserDto user;
+
 }
