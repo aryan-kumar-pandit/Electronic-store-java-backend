@@ -10,5 +10,5 @@ public interface RefreshTokenService {
     RefreshTokenDto findByToken(String token);
 
     //verify expiry of token
-    void verifyRefreshToken(String token);
+    RefreshTokenDto verifyRefreshToken(RefreshTokenDto refreshTokenDto);
 }
