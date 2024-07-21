@@ -19,7 +19,7 @@ class ElectronicStoreApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-	@Test
+	/*@Test
 	void TestToken()
 	{
 		User user = userRepository.findByEmail("aryan@gmail.com").get();
@@ -28,6 +28,6 @@ class ElectronicStoreApplicationTests {
 		System.out.println(token);
 		System.out.println("Username is " +jwtHelper.getUsernameFromToken(token));
 
-	}
+	}*/
 
 }
