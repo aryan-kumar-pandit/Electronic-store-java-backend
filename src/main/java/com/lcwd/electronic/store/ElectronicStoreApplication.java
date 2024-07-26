@@ -2,6 +2,7 @@ package com.lcwd.electronic.store;
 
 import com.lcwd.electronic.store.entities.Role;
 import com.lcwd.electronic.store.entities.User;
+import com.lcwd.electronic.store.exceptions.ResourceNotFoundException;
 import com.lcwd.electronic.store.repositories.RoleRepository;
 import com.lcwd.electronic.store.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class ElectronicStoreApplication implements CommandLineRunner {
 	private PasswordEncoder passwordEncoder;
 	@Override
 	public void run(String... args) throws Exception {
-		Role roleAdmin = roleRepository.findByName("ROLE_ADMIN").orElse(null);
+		/*Role roleAdmin = roleRepository.findByName("ROLE_ADMIN").orElse(null);
 		if(roleAdmin==null) {
 			Role role1 = new Role();
 			role1.setRoleId(UUID.randomUUID().toString());
@@ -55,10 +56,10 @@ public class ElectronicStoreApplication implements CommandLineRunner {
 			user.setPassword(passwordEncoder.encode("12345"));
 			user.setRoles(List.of(roleAdmin));
 			user.setUserId(UUID.randomUUID().toString());
-			userRepository.save(user);
+			userRepository.save(user);*/
 
 
-		}
+		//}
 
 
 	}
